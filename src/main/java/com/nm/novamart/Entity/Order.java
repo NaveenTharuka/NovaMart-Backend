@@ -2,33 +2,32 @@ package com.nm.novamart.Entity;
 
 import com.nm.novamart.Enum.OrderStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "orders")
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
+@Table(name = "orders")
 public class Order {
 
     @Id
     private String orderId;
 
-    private String userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private LocalDateTime orderDate;
+    private Double totalAmount;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private OrderStatus status;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<OrderItems> orderItems;
-
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItems> orderItems = new ArrayList<>();
 }
