@@ -1,24 +1,16 @@
 package com.nm.novamart.Service;
 
-import com.nm.novamart.Dto.CartItemResponseDto;
-import com.nm.novamart.Dto.CartRequestDto;
-import com.nm.novamart.Entity.Cart;
-import com.nm.novamart.Entity.CartItems;
-import com.nm.novamart.Entity.Product;
-import com.nm.novamart.Entity.User;
+import com.nm.novamart.Dto.*;
+import com.nm.novamart.Entity.*;
+import com.nm.novamart.Exeptions.UserNotFoundExeption;
 import com.nm.novamart.Mapper.CartItemMapper;
-import com.nm.novamart.Repository.CartItemRepository;
-import com.nm.novamart.Repository.CartRepository;
-import com.nm.novamart.Repository.ProductRepository;
-import com.nm.novamart.Repository.UserRepository;
+import com.nm.novamart.Repository.*;
 import com.nm.novamart.Utility.PriceCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,7 +26,7 @@ public class CartServiceImpl {
     public void addToCart(UUID userId, UUID productId, int quantity) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found!"));
+                .orElseThrow(() -> new UserNotFoundExeption(userId));
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
@@ -73,7 +65,7 @@ public class CartServiceImpl {
 
     public List<CartItemResponseDto> getCartItems(UUID userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found!"));
+                .orElseThrow(() -> new UserNotFoundExeption(userId));
 
         Cart cart = user.getCart();
 
@@ -84,7 +76,7 @@ public class CartServiceImpl {
     public List<CartItemResponseDto> updateCartItem(CartRequestDto cartRequestDto, UUID userId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found!"));
+                .orElseThrow(() -> new UserNotFoundExeption(userId));
         Cart cart = user.getCart();
         Product product = productRepository.findById(cartRequestDto.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
@@ -101,11 +93,12 @@ public class CartServiceImpl {
         cartItem.setQuantity(cartRequestDto.getQuantity());
         cartItem.setSubtotal(product.getPrice()*cartRequestDto.getQuantity());
 
-        cartItemRepository.save(cartItem);
-
         double total = PriceCalculator.getTotalPrice(user.getCart());
         user.getCart().setTotalPrice(total);
+
+        cartItemRepository.save(cartItem);
         cartRepository.save(user.getCart());
+
         return CartItemMapper.toCartResponse(cart);
 
     }
