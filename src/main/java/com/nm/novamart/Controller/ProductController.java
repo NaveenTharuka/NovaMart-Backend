@@ -1,6 +1,7 @@
 package com.nm.novamart.Controller;
 
 import com.nm.novamart.Dto.ProductRequestDto;
+import com.nm.novamart.Dto.ProductResponseDto;
 import com.nm.novamart.Dto.ProductUpdateReqDto;
 import com.nm.novamart.Entity.Product;
 import com.nm.novamart.Service.ProductServiceImpl;
@@ -30,23 +31,23 @@ public class ProductController {
 
     @Transactional
     @PutMapping
-    public ResponseEntity<Product> updateProduct(@RequestBody ProductUpdateReqDto productReqDto) {
-        Product product = productService.updateProduct(productReqDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    public ResponseEntity<ProductResponseDto> updateProduct(@RequestBody ProductUpdateReqDto productReqDto) {
+        ProductResponseDto responseDto = productService.updateProduct(productReqDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts(){
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts(){
         return ResponseEntity.status(HttpStatus.FOUND).body(productService.getAllProducts());
     }
 
     @GetMapping("{productName}")
-    public ResponseEntity<Product> getProductByName(@PathVariable String productName) {
+    public ResponseEntity<ProductResponseDto> getProductByName(@PathVariable String productName) {
         return ResponseEntity.status(HttpStatus.FOUND).body(productService.getProductByName(productName));
     }
 
-    @GetMapping("cate/{category}")
-    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category) {
+    @GetMapping("category/{category}")
+    public ResponseEntity<List<ProductResponseDto>> getProductsByCategory(@PathVariable String category) {
         return ResponseEntity.status(HttpStatus.FOUND).body(productService.getProductsByCategory(category));
     }
 

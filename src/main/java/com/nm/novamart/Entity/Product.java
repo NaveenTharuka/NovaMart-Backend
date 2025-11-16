@@ -22,6 +22,9 @@ public class Product {
     private double price;
     private int quantity;
 //    private String ImgURL;
-    private String category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
 }

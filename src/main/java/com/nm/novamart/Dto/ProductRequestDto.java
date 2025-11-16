@@ -1,5 +1,6 @@
 package com.nm.novamart.Dto;
 
+import com.nm.novamart.Entity.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,6 @@ public class ProductRequestDto {
 
     @NotBlank(message = "Name required")
     private String name;
-
 
     private String description;
 

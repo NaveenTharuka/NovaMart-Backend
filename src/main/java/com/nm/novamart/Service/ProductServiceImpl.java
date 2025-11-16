@@ -1,16 +1,21 @@
 package com.nm.novamart.Service;
 
 import com.nm.novamart.Dto.ProductRequestDto;
+import com.nm.novamart.Dto.ProductResponseDto;
 import com.nm.novamart.Dto.ProductUpdateReqDto;
+import com.nm.novamart.Entity.Category;
 import com.nm.novamart.Entity.Product;
 import com.nm.novamart.Exeptions.DuplicateProductException;
+import com.nm.novamart.Exeptions.InvalidCategoryException;
 import com.nm.novamart.Exeptions.ProductNotFoundException;
 import com.nm.novamart.Mapper.ProductMapper;
+import com.nm.novamart.Repository.CategoryRepository;
 import com.nm.novamart.Repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,19 +25,21 @@ import java.util.UUID;
 public class ProductServiceImpl {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
     private final CartServiceImpl cartService;
+    private final ProductMapper productMapper;
 
     @Transactional
     public Product addProduct(ProductRequestDto productReqDto) {
         if(productRepository.existsByName(productReqDto.getName())) {
             throw new DuplicateProductException(productReqDto.getName());
         }
-        Product newProduct =  ProductMapper.toProduct(productReqDto);
+        Product newProduct =  productMapper.toProduct(productReqDto);
         return productRepository.save(newProduct);
     }
 
     @Transactional
-    public Product updateProduct(ProductUpdateReqDto productReqDto) {
+    public ProductResponseDto updateProduct(ProductUpdateReqDto productReqDto) {
 
         Product product =  productRepository.findById(productReqDto.getId())
                 .orElseThrow(() -> new ProductNotFoundException(productReqDto.getId()));
@@ -41,11 +48,13 @@ public class ProductServiceImpl {
             throw new DuplicateProductException(productReqDto.getName());
         }
 
-        Product updateProduct = ProductMapper.updateProduct(product, productReqDto);
+        Product updateProduct = productMapper.updateProduct(product, productReqDto);
 
         cartService.updateAllCartItems(updateProduct);
 
-        return productRepository.save(updateProduct);
+        Product updatedProduct = productRepository.save(updateProduct);
+
+        return productMapper.toResponse(updatedProduct);
     }
 
     @Transactional
@@ -57,20 +66,42 @@ public class ProductServiceImpl {
     }
 
     @Transactional(readOnly = true)
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponseDto> getAllProducts() {
+
+        List<Product> products = productRepository.findAll();
+        List<ProductResponseDto> productResponses = new ArrayList<>();
+        for(Product product : products) {
+            ProductResponseDto productResponseDto = productMapper.toResponse(product);
+            productResponses.add(productResponseDto);
+        }
+
+        return productResponses;
     }
 
     @Transactional(readOnly = true)
-    public Product getProductByName(String productName) {
+    public ProductResponseDto getProductByName(String productName) {
 
         if (!(productRepository.existsByNameIgnoreCase(productName))) {
             throw new ProductNotFoundException(productName);
         }
-        return productRepository.getByNameIgnoreCase(productName);
+
+        return productMapper.toResponse(productRepository.getProductByName(productName));
     }
 
-    public List<Product> getProductsByCategory(String category) {
-        return productRepository.getProductByCategoryIgnoreCase(category);
+    public List<ProductResponseDto> getProductsByCategory(String categoryName) {
+        if(!(categoryRepository.existsByName(categoryName))) {
+            throw new InvalidCategoryException(categoryName);
+        }
+        Category category = categoryRepository.getCategoryByName( categoryName);
+
+        List<Product> products = productRepository.getProductByCategoryId(category.getId());
+        List<ProductResponseDto> productResponses = new ArrayList<>();
+
+        for(Product product : products) {
+            ProductResponseDto productResponseDto = productMapper.toResponse(product);
+            productResponses.add(productResponseDto);
+        }
+
+        return productResponses;
     }
 }

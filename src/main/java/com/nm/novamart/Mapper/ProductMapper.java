@@ -1,29 +1,56 @@
 package com.nm.novamart.Mapper;
 
 import com.nm.novamart.Dto.ProductRequestDto;
+import com.nm.novamart.Dto.ProductResponseDto;
 import com.nm.novamart.Dto.ProductUpdateReqDto;
-import com.nm.novamart.Entity.Cart;
-import com.nm.novamart.Entity.CartItems;
+import com.nm.novamart.Entity.Category;
 import com.nm.novamart.Entity.Product;
+import com.nm.novamart.Repository.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ProductMapper {
 
-    public static Product toProduct(ProductRequestDto productReqDto) {
+    private final CategoryRepository categoryRepository;
+
+    public Product toProduct(ProductRequestDto productReqDto) {
         if(productReqDto == null) {
             return null;
         }
+        if(productReqDto.getCategory() == null || !(categoryRepository.existsByName(productReqDto.getCategory()))) {
+            return null;
+        }
+
+        Category category = categoryRepository.getCategoryByName(productReqDto.getCategory());
+
         return Product.builder()
                 .name(productReqDto.getName())
                 .description(productReqDto.getDescription())
                 .price(productReqDto.getPrice())
                 .quantity(productReqDto.getQuantity())
-                .category(productReqDto.getCategory())
+                .category(category)
                 .build();
     }
 
-    public static Product updateProduct(Product product,ProductUpdateReqDto productUpdateReqDto) {
+    public ProductResponseDto toResponse(Product product) {
+        if(product == null) {
+            return null;
+        }
+
+        return ProductResponseDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .category(product.getCategory().getName())
+                .price(product.getPrice())
+                .quantity(product.getQuantity())
+                .build();
+    }
+
+    public Product updateProduct(Product product,ProductUpdateReqDto productUpdateReqDto) {
+
         if(productUpdateReqDto == null ||  product == null) {
             return null;
         }
@@ -31,7 +58,11 @@ public class ProductMapper {
         product.setDescription(productUpdateReqDto.getDescription());
         product.setPrice(productUpdateReqDto.getPrice());
         product.setQuantity(productUpdateReqDto.getQuantity());
-        product.setCategory(productUpdateReqDto.getCategory());
+
+        Category category = categoryRepository.getCategoryByName(productUpdateReqDto.getCategory());
+
+        product.setCategory(category);
+
         return product;
     }
 }
