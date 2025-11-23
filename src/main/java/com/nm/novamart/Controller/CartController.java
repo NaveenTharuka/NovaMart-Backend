@@ -1,9 +1,9 @@
 package com.nm.novamart.Controller;
 
 
-import com.nm.novamart.Dto.CartItemDeleteRequestDto;
-import com.nm.novamart.Dto.CartItemResponseDto;
-import com.nm.novamart.Dto.CartItemRequestDto;
+import com.nm.novamart.Dto.CartItems.CartItemDeleteRequestDto;
+import com.nm.novamart.Dto.CartItems.CartItemResponseDto;
+import com.nm.novamart.Dto.CartItems.CartItemRequestDto;
 import com.nm.novamart.Entity.Product;
 import com.nm.novamart.Repository.ProductRepository;
 import com.nm.novamart.Service.CartServiceImpl;

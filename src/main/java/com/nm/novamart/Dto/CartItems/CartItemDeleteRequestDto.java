@@ -1,4 +1,4 @@
-package com.nm.novamart.Dto;
+package com.nm.novamart.Dto.CartItems;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

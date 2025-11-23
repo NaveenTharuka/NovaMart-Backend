@@ -2,7 +2,6 @@ package com.nm.novamart.Utility;
 
 import com.nm.novamart.Entity.Cart;
 import com.nm.novamart.Entity.CartItems;
-import com.nm.novamart.Entity.Product;
 
 import java.util.List;
 

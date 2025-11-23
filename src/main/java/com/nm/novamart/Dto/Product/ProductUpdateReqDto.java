@@ -1,6 +1,5 @@
-package com.nm.novamart.Dto;
+package com.nm.novamart.Dto.Product;
 
-import com.nm.novamart.Entity.Category;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

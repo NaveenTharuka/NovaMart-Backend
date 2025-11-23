@@ -1,14 +1,18 @@
 package com.nm.novamart.Mapper;
 
-import com.nm.novamart.Dto.CartItemResponseDto;
+import com.nm.novamart.Dto.CartItems.CartItemResponseDto;
 import com.nm.novamart.Entity.Cart;
 import com.nm.novamart.Entity.CartItems;
 import com.nm.novamart.Entity.Product;
 import com.nm.novamart.Entity.User;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
+@RequiredArgsConstructor
 public class CartItemMapper {
 
     public static List<CartItemResponseDto> toCartResponse(Cart cart) {

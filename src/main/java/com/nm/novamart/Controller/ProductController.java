@@ -1,8 +1,8 @@
 package com.nm.novamart.Controller;
 
-import com.nm.novamart.Dto.ProductRequestDto;
-import com.nm.novamart.Dto.ProductResponseDto;
-import com.nm.novamart.Dto.ProductUpdateReqDto;
+import com.nm.novamart.Dto.Product.ProductRequestDto;
+import com.nm.novamart.Dto.Product.ProductResponseDto;
+import com.nm.novamart.Dto.Product.ProductUpdateReqDto;
 import com.nm.novamart.Entity.Product;
 import com.nm.novamart.Service.ProductServiceImpl;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.nm.novamart.Dto;
+package com.nm.novamart.Dto.CartItems;
 
 
 import lombok.AllArgsConstructor;
