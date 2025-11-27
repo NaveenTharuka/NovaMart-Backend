@@ -1,16 +1,24 @@
 package com.nm.novamart.Service;
 
+import com.nm.novamart.Dto.AuthRequestDto;
+import com.nm.novamart.Dto.AuthResponseDto;
 import com.nm.novamart.Dto.CartItems.CartItemResponseDto;
 import com.nm.novamart.Dto.RegisterRequestDto;
 import com.nm.novamart.Dto.UserResponseDto;
 import com.nm.novamart.Entity.User;
+import com.nm.novamart.Enum.Role;
 import com.nm.novamart.Exeptions.DuplicateEmailException;
-import com.nm.novamart.Mapper.CartItemMapper;
+import com.nm.novamart.Exeptions.UserNotFoundException;
 import com.nm.novamart.Mapper.UserMapper;
 import com.nm.novamart.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.util.List;
 
 @Service
@@ -20,6 +28,8 @@ public class UserServiceImpl {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final CartServiceImpl cartService;
+    private final AuthenticationManager authManager;
+    private final JWTService jwtService;
 
     public UserResponseDto addUser(RegisterRequestDto requestDto) {
 
@@ -38,6 +48,25 @@ public class UserServiceImpl {
 
 
         return responseDto;
+    }
+
+    public AuthResponseDto login(AuthRequestDto loginRequest) throws AuthenticationException {
+
+        Authentication authentication = authManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
+        if(!(authentication.isAuthenticated())){
+            throw  new AuthenticationException("Invalid username and password");
+        }
+
+        User user = userRepository.getUserByEmail(loginRequest.getEmail());
+
+        return AuthResponseDto.builder()
+                .token(jwtService.generateToken(loginRequest.getEmail()))
+                .role(user.getRole())
+                .userName(user.getUserName())
+                .email(user.getEmail())
+                .build();
     }
 
 }

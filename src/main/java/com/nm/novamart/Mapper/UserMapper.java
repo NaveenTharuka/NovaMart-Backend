@@ -5,11 +5,15 @@ import com.nm.novamart.Dto.UserResponseDto;
 import com.nm.novamart.Entity.Cart;
 import com.nm.novamart.Entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class UserMapper {
+
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
     public User toEntity(RegisterRequestDto requestDto) {
         if (requestDto.getEmail() == null || requestDto.getPassword() == null || requestDto.getUserName() == null) {
             return null;
@@ -18,7 +22,7 @@ public class UserMapper {
 
         return User.builder()
                 .userName(requestDto.getUserName())
-                .password(requestDto.getPassword())
+                .password(encoder.encode(requestDto.getPassword()))
                 .email(requestDto.getEmail())
                 .role(requestDto.getRole())
                 .cart(newCart)
