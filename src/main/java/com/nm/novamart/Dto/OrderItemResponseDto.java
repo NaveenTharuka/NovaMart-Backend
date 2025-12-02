@@ -17,6 +17,7 @@ public class OrderItemResponseDto {
     private Long id;
 
     private String productName;
+    private Double unitPrice;
 
     private int quantity;
     private Double price;

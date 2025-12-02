@@ -19,7 +19,7 @@ public class OrderMapper {
                 .customerEmail(order.getUser().getEmail())
                 .orderDate(order.getOrderDate().toString())
                 .orderItems(orderItemMapper.toResponse(order.getOrderItems()))
-                .orderTotal(order.getTotalAmount().toString())
+                .orderTotal(order.getTotalAmount())
                 .build();
     }
 }

@@ -22,9 +22,10 @@ public class OrderItems {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+    private Double unitPrice;
 
     private int quantity;
-    private Double price;
+    private Double totalPrice;
 
 
 }

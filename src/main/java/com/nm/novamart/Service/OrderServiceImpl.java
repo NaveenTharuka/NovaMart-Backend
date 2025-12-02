@@ -49,7 +49,6 @@ public class OrderServiceImpl {
 
         double price = product.getPrice()*requestDto.getQuantity();
 
-
         Order order = new Order();
 
         order.setUser(user);
@@ -63,8 +62,9 @@ public class OrderServiceImpl {
         product.setQuantity(product.getQuantity() -  requestDto.getQuantity());
         productRepository.save(product);
 
-        order.setOrderItems(orderItemMapper.toOrderItem(product, order, requestDto, price));
+        order.setOrderItems(orderItemMapper.toOrderItem(product, order, requestDto));
         orderItemRepository.saveAll(order.getOrderItems());
+        orderRepository.save(order);
 
         return orderMapper.toResponse(order);
 
@@ -85,7 +85,7 @@ public class OrderServiceImpl {
         String timeStamp = String.valueOf(System.currentTimeMillis());
         String postFix = String.format("%05d", orderId);
 
-        return prefix + timeStamp + postFix;
+        return prefix +"-"+ timeStamp + "-"+ postFix;
     }
 
 }

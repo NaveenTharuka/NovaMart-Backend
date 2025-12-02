@@ -20,7 +20,7 @@ public class OrderResponseDto {
     private String orderDate;
 //    private String orderTime;
     private List<OrderItemResponseDto> orderItems;
-    private String orderTotal;
+    private double orderTotal;
 
 
 }

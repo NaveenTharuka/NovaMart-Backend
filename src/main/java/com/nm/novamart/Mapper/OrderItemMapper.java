@@ -18,13 +18,16 @@ public class OrderItemMapper {
 
     private final ProductRepository productRepository;
 
-    public List<OrderItems> toOrderItem (Product product, Order order, PlaceOrderBuyNowDto requestDto, double totalPrice) {
+    public List<OrderItems> toOrderItem (Product product, Order order, PlaceOrderBuyNowDto requestDto) {
         List<OrderItems> orderItems = new ArrayList<>();
+
+        double price = product.getPrice()*requestDto.getQuantity();
 
         OrderItems orderItem =  OrderItems.builder()
                 .order(order)
                 .product(product)
-                .price(totalPrice)
+                .unitPrice(product.getPrice())
+                .totalPrice(price)
                 .quantity(requestDto.getQuantity())
                 .build();
         orderItems.add(orderItem);
@@ -48,8 +51,9 @@ public class OrderItemMapper {
 
         for  (OrderItems orderItem : orderItems) {
             OrderItemResponseDto item = OrderItemResponseDto.builder()
-                    .price(orderItem.getPrice())
+                    .price(orderItem.getTotalPrice())
                     .productName(orderItem.getProduct().getName())
+                    .unitPrice(orderItem.getUnitPrice())
                     .quantity(orderItem.getQuantity())
                     .build();
             orderItemResponse.add(item);

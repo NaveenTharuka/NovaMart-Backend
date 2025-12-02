@@ -1,6 +1,7 @@
 package com.nm.novamart.Controller;
 
 import com.nm.novamart.Dto.OrderResponseDto;
+import com.nm.novamart.Dto.PlaceOrderBuyNowDto;
 import com.nm.novamart.Service.OrderServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,11 @@ public class OrderController {
     public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable String orderId) {
         OrderResponseDto responseDto = orderService.getOrderById(orderId);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @PostMapping
+    public ResponseEntity<OrderResponseDto> buyNow(@RequestBody PlaceOrderBuyNowDto placeOrderBuyNowDto) {
+        OrderResponseDto response = orderService.placeOrderBuyNow(placeOrderBuyNowDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
