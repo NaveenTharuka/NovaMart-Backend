@@ -1,4 +1,4 @@
-package com.nm.novamart.Dto;
+package com.nm.novamart.Dto.Authorization;
 
 import jakarta.persistence.Column;
 import lombok.*;

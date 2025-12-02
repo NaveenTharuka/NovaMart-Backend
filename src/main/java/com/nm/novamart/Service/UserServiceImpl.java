@@ -1,14 +1,12 @@
 package com.nm.novamart.Service;
 
-import com.nm.novamart.Dto.AuthRequestDto;
-import com.nm.novamart.Dto.AuthResponseDto;
+import com.nm.novamart.Dto.Authorization.AuthRequestDto;
+import com.nm.novamart.Dto.Authorization.AuthResponseDto;
 import com.nm.novamart.Dto.CartItems.CartItemResponseDto;
-import com.nm.novamart.Dto.RegisterRequestDto;
-import com.nm.novamart.Dto.UserResponseDto;
+import com.nm.novamart.Dto.Authorization.RegisterRequestDto;
+import com.nm.novamart.Dto.Authorization.UserResponseDto;
 import com.nm.novamart.Entity.User;
-import com.nm.novamart.Enum.Role;
 import com.nm.novamart.Exeptions.DuplicateEmailException;
-import com.nm.novamart.Exeptions.UserNotFoundException;
 import com.nm.novamart.Mapper.UserMapper;
 import com.nm.novamart.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;

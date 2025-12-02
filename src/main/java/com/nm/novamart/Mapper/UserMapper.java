@@ -1,7 +1,7 @@
 package com.nm.novamart.Mapper;
 
-import com.nm.novamart.Dto.RegisterRequestDto;
-import com.nm.novamart.Dto.UserResponseDto;
+import com.nm.novamart.Dto.Authorization.RegisterRequestDto;
+import com.nm.novamart.Dto.Authorization.UserResponseDto;
 import com.nm.novamart.Entity.Cart;
 import com.nm.novamart.Entity.User;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,8 @@ public class UserMapper {
                 .userName(requestDto.getUserName())
                 .password(encoder.encode(requestDto.getPassword()))
                 .email(requestDto.getEmail())
+                .phoneNumber(requestDto.getPhoneNumber())
+                .address(requestDto.getAddress())
                 .role(requestDto.getRole())
                 .cart(newCart)
                 .build();

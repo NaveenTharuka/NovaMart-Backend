@@ -1,10 +1,9 @@
 package com.nm.novamart.Controller;
 
-import com.nm.novamart.Dto.AuthRequestDto;
-import com.nm.novamart.Dto.AuthResponseDto;
-import com.nm.novamart.Dto.RegisterRequestDto;
-import com.nm.novamart.Dto.UserResponseDto;
-import com.nm.novamart.Entity.User;
+import com.nm.novamart.Dto.Authorization.AuthRequestDto;
+import com.nm.novamart.Dto.Authorization.AuthResponseDto;
+import com.nm.novamart.Dto.Authorization.RegisterRequestDto;
+import com.nm.novamart.Dto.Authorization.UserResponseDto;
 import com.nm.novamart.Service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

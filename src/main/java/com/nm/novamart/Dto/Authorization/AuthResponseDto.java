@@ -1,4 +1,4 @@
-package com.nm.novamart.Dto;
+package com.nm.novamart.Dto.Authorization;
 
 import com.nm.novamart.Enum.Role;
 import lombok.Builder;

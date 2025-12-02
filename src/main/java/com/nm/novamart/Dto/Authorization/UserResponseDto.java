@@ -1,7 +1,6 @@
-package com.nm.novamart.Dto;
+package com.nm.novamart.Dto.Authorization;
 
 import com.nm.novamart.Dto.CartItems.CartItemResponseDto;
-import com.nm.novamart.Entity.CartItems;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
