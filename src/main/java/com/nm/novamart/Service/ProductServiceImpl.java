@@ -104,4 +104,11 @@ public class ProductServiceImpl {
 
         return productResponses;
     }
+
+    public ProductResponseDto getProductById(UUID id) {
+        if (!productRepository.existsById(id)) {
+            throw new ProductNotFoundException(id);
+        }
+        return productMapper.toResponse(productRepository.getProductById(id));
+    }
 }

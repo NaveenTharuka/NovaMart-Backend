@@ -1,6 +1,5 @@
 package com.nm.novamart.Repository;
 
-import com.nm.novamart.Entity.Category;
 import com.nm.novamart.Entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,10 +15,10 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     boolean existsByNameAndIdNot(String name, UUID id);
     boolean existsByNameIgnoreCase(String name);
-    boolean existsByCategory(Category category);
 
     @Transactional(readOnly = true)
     Product getProductByName(String productName);
-    Product getByNameIgnoreCase(String name);
+    Product getProductById(UUID id);
+
     List<Product> getProductByCategoryId(Long id);
 }
