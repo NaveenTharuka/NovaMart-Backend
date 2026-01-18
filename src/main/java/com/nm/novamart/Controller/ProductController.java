@@ -24,9 +24,9 @@ public class ProductController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody ProductRequestDto productReqDto) {
-        Product product = productService.addProduct(productReqDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto productReqDto) {
+        ProductResponseDto response = productService.addProduct(productReqDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Transactional
@@ -48,7 +48,7 @@ public class ProductController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable UUID id) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(productService.getProductById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProductById(id));
     }
 
     @GetMapping("category/{category}")

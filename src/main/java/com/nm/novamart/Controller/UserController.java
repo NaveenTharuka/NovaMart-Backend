@@ -14,6 +14,7 @@ import javax.naming.AuthenticationException;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @RequestMapping("api/user")
 public class UserController {
 

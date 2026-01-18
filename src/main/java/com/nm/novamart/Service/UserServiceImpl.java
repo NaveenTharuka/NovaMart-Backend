@@ -62,6 +62,7 @@ public class UserServiceImpl {
         return AuthResponseDto.builder()
                 .token(jwtService.generateToken(loginRequest.getEmail()))
                 .role(user.getRole())
+                .id(user.getId())
                 .userName(user.getUserName())
                 .email(user.getEmail())
                 .build();

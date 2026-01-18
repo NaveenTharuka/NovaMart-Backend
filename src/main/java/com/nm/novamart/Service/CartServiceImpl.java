@@ -27,8 +27,9 @@ public class CartServiceImpl {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
 
+
     @Transactional
-    public void addToCart(UUID userId, UUID productId, int quantity) {
+    public List<CartItemResponseDto> addToCart(UUID userId, UUID productId, int quantity) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
@@ -64,6 +65,10 @@ public class CartServiceImpl {
         user.getCart().setTotalPrice(total);
 
         cartRepository.save(user.getCart());
+
+        List<CartItemResponseDto> cartItems = CartItemMapper.toCartResponse(user.getCart());
+
+        return cartItems;
 
     }
 

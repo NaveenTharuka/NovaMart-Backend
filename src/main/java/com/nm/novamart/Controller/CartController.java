@@ -30,9 +30,9 @@ public class CartController {
     }
 
     @PostMapping("{userId}")
-    public ResponseEntity<Product> addToCart(@RequestBody CartItemRequestDto cartItemRequestDto, @PathVariable UUID userId) {
-        cartService.addToCart(userId, cartItemRequestDto.getProductId(), cartItemRequestDto.getQuantity());
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(productRepository.findById(cartItemRequestDto.getProductId()).get());
+    public ResponseEntity<List<CartItemResponseDto>> addToCart(@RequestBody CartItemRequestDto cartItemRequestDto, @PathVariable UUID userId) {
+        List<CartItemResponseDto> cartItems = cartService.addToCart(userId, cartItemRequestDto.getProductId(), cartItemRequestDto.getQuantity());
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(cartItems);
     }
 
     @PutMapping("{userId}")

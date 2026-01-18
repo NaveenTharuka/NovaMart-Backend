@@ -30,12 +30,14 @@ public class ProductServiceImpl {
     private final ProductMapper productMapper;
 
     @Transactional
-    public Product addProduct(ProductRequestDto productReqDto) {
+    public ProductResponseDto addProduct(ProductRequestDto productReqDto) {
         if(productRepository.existsByName(productReqDto.getName())) {
             throw new DuplicateProductException(productReqDto.getName());
         }
         Product newProduct =  productMapper.toProduct(productReqDto);
-        return productRepository.save(newProduct);
+        productRepository.save(newProduct);
+
+        return productMapper.toResponse(newProduct);
     }
 
     @Transactional
