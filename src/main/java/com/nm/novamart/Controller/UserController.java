@@ -1,9 +1,6 @@
 package com.nm.novamart.Controller;
 
-import com.nm.novamart.Dto.Authorization.AuthRequestDto;
-import com.nm.novamart.Dto.Authorization.AuthResponseDto;
-import com.nm.novamart.Dto.Authorization.RegisterRequestDto;
-import com.nm.novamart.Dto.Authorization.UserResponseDto;
+import com.nm.novamart.Dto.Authorization.*;
 import com.nm.novamart.Service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +26,12 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody AuthRequestDto authRequestDto) throws AuthenticationException {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.login(authRequestDto));
+    }
+
+    @PostMapping("/isTokenExpired")
+    public ResponseEntity<?> isTokenExpired(@RequestBody TokenRequestDto tokenRequestDto) {
+        Boolean response = userService.isTokenExpired(tokenRequestDto.getToken());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

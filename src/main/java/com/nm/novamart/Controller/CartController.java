@@ -25,7 +25,7 @@ public class CartController {
 
     @GetMapping("{userId}")
     public ResponseEntity<List<CartItemResponseDto>> getUserCart(@PathVariable UUID userId) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(cartService.getCartItems(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(cartService.getCartItems(userId));
 
     }
 

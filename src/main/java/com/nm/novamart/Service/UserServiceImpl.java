@@ -31,7 +31,6 @@ public class UserServiceImpl {
 
     public UserResponseDto addUser(RegisterRequestDto requestDto) {
 
-
         if(userRepository.existsByEmail(requestDto.getEmail())) {
             throw new DuplicateEmailException("Email is already in use :  " + requestDto.getEmail());
         }
@@ -66,6 +65,13 @@ public class UserServiceImpl {
                 .userName(user.getUserName())
                 .email(user.getEmail())
                 .build();
+    }
+
+    public Boolean isTokenExpired(String token) {
+        if(token == null) {
+            return false;
+        }
+        return jwtService.isTokenExpired(token);
     }
 
 }
