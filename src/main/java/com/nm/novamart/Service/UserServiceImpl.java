@@ -11,10 +11,13 @@ import com.nm.novamart.Mapper.UserMapper;
 import com.nm.novamart.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.naming.AuthenticationException;
 import java.util.List;
@@ -47,25 +50,45 @@ public class UserServiceImpl {
         return responseDto;
     }
 
-    public AuthResponseDto login(AuthRequestDto loginRequest) throws AuthenticationException {
+    public AuthResponseDto login(AuthRequestDto loginRequest) {
+        try {
+            // Authenticate user
+            Authentication authentication = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+            );
 
-        Authentication authentication = authManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            if (!authentication.isAuthenticated()) {
+                throw new RuntimeException("Invalid email or password");
+            }
 
-        if(!(authentication.isAuthenticated())){
-            throw  new AuthenticationException("Invalid username and password");
+            // Fetch user from DB
+            User user = userRepository.getUserByEmail(loginRequest.getEmail());
+            if (user == null) {
+                throw new RuntimeException("User not found with this email");
+            }
+
+            String token = jwtService.generateToken(loginRequest.getEmail());
+
+            // Return token + user info
+            return AuthResponseDto.builder()
+                    .token(token)
+                    .role(user.getRole())
+                    .id(user.getId())
+                    .userName(user.getUserName())
+                    .email(user.getEmail())
+                    .build();
+
+        } catch (BadCredentialsException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password");
+        } catch (InternalAuthenticationServiceException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found with this email");
+        } catch (RuntimeException e) {
+            // any other runtime error
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
-
-        User user = userRepository.getUserByEmail(loginRequest.getEmail());
-
-        return AuthResponseDto.builder()
-                .token(jwtService.generateToken(loginRequest.getEmail()))
-                .role(user.getRole())
-                .id(user.getId())
-                .userName(user.getUserName())
-                .email(user.getEmail())
-                .build();
     }
+
+
 
     public Boolean isTokenExpired(String token) {
         if(token == null) {

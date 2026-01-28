@@ -24,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody AuthRequestDto authRequestDto) throws AuthenticationException {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.login(authRequestDto));
+    public ResponseEntity<AuthResponseDto> login(@RequestBody AuthRequestDto authRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.login(authRequestDto));
     }
 
     @PostMapping("/isTokenExpired")
