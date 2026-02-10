@@ -8,10 +8,10 @@ import java.util.UUID;
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class UserNotFoundException extends BaseException {
     public UserNotFoundException(UUID userId) {
-        super("User not found with id " + userId);
+        super("User not found with id :" + userId);
     }
 
     public UserNotFoundException(String username) {
-        super("User not found with username " + username);
+        super("User not found with username :" + username);
     }
 }

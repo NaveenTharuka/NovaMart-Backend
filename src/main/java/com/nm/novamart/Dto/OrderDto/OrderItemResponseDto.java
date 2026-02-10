@@ -1,4 +1,4 @@
-package com.nm.novamart.Dto;
+package com.nm.novamart.Dto.OrderDto;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 public class OrderItemResponseDto {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String productName;

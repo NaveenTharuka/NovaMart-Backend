@@ -1,0 +1,15 @@
+package com.nm.novamart.Repository;
+
+import com.nm.novamart.Entity.Review;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.UUID;
+
+public interface ReviewRepository extends JpaRepository<Review, UUID> {
+
+    public List<Review> findReviewByProductId(UUID productId);
+    public List<Review> findByUserId(UUID userId);
+
+    boolean existsByUserIdAndProductId(UUID userId, UUID productId);
+}

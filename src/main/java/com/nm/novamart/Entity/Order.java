@@ -27,12 +27,19 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String address;
+
     private LocalDateTime orderDate;
     private Double totalAmount;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    private String comment;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItems> orderItems = new ArrayList<>();
+
+    private String cancellationReason;
+
 }

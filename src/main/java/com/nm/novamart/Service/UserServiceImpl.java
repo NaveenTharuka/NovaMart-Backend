@@ -1,12 +1,12 @@
 package com.nm.novamart.Service;
 
-import com.nm.novamart.Dto.Authorization.AuthRequestDto;
-import com.nm.novamart.Dto.Authorization.AuthResponseDto;
+import com.nm.novamart.Dto.Authorization.AdminUserResponseDto;
+import com.nm.novamart.Dto.Authorization.*;
 import com.nm.novamart.Dto.CartItems.CartItemResponseDto;
-import com.nm.novamart.Dto.Authorization.RegisterRequestDto;
-import com.nm.novamart.Dto.Authorization.UserResponseDto;
 import com.nm.novamart.Entity.User;
+import com.nm.novamart.Enum.Role;
 import com.nm.novamart.Exeptions.DuplicateEmailException;
+import com.nm.novamart.Exeptions.UserNotFoundException;
 import com.nm.novamart.Mapper.UserMapper;
 import com.nm.novamart.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +17,10 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.naming.AuthenticationException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,6 +33,17 @@ public class UserServiceImpl {
     private final AuthenticationManager authManager;
     private final JWTService jwtService;
 
+    @Transactional
+    public List<AdminUserResponseDto> getAllUsers()
+    {
+        List<User> users = userRepository.findAll();
+        List<AdminUserResponseDto> adminUserResponseDtos = new ArrayList<>();
+
+        for (User user : users){
+            adminUserResponseDtos.add(userMapper.toAdminResponse(user));
+        }
+        return adminUserResponseDtos;
+    }
     public UserResponseDto addUser(RegisterRequestDto requestDto) {
 
         if(userRepository.existsByEmail(requestDto.getEmail())) {
@@ -88,6 +100,23 @@ public class UserServiceImpl {
         }
     }
 
+    public void updateUserRole(AdminUpdateUserRole reqDto){
+        if(reqDto.getId() == null || reqDto.getRole() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request");
+        }
+
+        Role role = parseRole(reqDto.getRole());
+        User user = userRepository.findById(reqDto.getId()).orElse(null);
+
+        if(user == null){
+            throw new UserNotFoundException(reqDto.getId());
+        }
+
+        user.setRole(role);
+        userRepository.save(user);
+
+    }
+
 
 
     public Boolean isTokenExpired(String token) {
@@ -95,6 +124,14 @@ public class UserServiceImpl {
             return false;
         }
         return jwtService.isTokenExpired(token);
+    }
+
+    private Role parseRole(String role){
+        try{
+            return Role.valueOf(role.toUpperCase());
+        }catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role");
+        }
     }
 
 }

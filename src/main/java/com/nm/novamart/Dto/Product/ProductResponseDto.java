@@ -1,10 +1,12 @@
 package com.nm.novamart.Dto.Product;
 
+import com.nm.novamart.Dto.Review.ProductReviewResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -24,4 +26,10 @@ public class ProductResponseDto {
     private int quantity;
 
     private String category;
+
+    private double rating;
+
+    private List<ProductReviewResponseDto>  reviews;
+
+
 }

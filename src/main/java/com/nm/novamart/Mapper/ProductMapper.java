@@ -3,11 +3,16 @@ package com.nm.novamart.Mapper;
 import com.nm.novamart.Dto.Product.ProductRequestDto;
 import com.nm.novamart.Dto.Product.ProductResponseDto;
 import com.nm.novamart.Dto.Product.ProductUpdateReqDto;
+import com.nm.novamart.Dto.Review.ProductReviewResponseDto;
 import com.nm.novamart.Entity.Category;
 import com.nm.novamart.Entity.Product;
+import com.nm.novamart.Entity.Review;
 import com.nm.novamart.Repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -39,6 +44,28 @@ public class ProductMapper {
             return null;
         }
 
+        List<Review> reviews = product.getReviews();
+
+        Double rating = 0.0;
+        List<ProductReviewResponseDto> reviewResponseDtos = new ArrayList<>();
+
+        for(Review review : reviews) {
+            rating += review.getRating();
+
+            ProductReviewResponseDto response = ProductReviewResponseDto.builder()
+                    .username(review.getUser().getUserName())
+                    .comment(review.getComment())
+                    .rating(rating)
+                    .createdAt(review.getCreatedAt())
+                    .build();
+
+            reviewResponseDtos.add(response);
+        }
+
+        rating = rating / reviews.size();
+
+
+
         return ProductResponseDto.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -46,6 +73,8 @@ public class ProductMapper {
                 .category(product.getCategory().getName())
                 .price(product.getPrice())
                 .quantity(product.getQuantity())
+                .rating(rating)
+                .reviews(reviewResponseDtos)
                 .build();
     }
 

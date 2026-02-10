@@ -1,4 +1,4 @@
-package com.nm.novamart.Dto;
+package com.nm.novamart.Dto.OrderDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +21,7 @@ public class OrderResponseDto {
 //    private String orderTime;
     private List<OrderItemResponseDto> orderItems;
     private double orderTotal;
+    private String shippingAddress;
 
 
 }

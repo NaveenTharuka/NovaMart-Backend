@@ -1,5 +1,6 @@
 package com.nm.novamart.Controller;
 
+import com.nm.novamart.Dto.Authorization.AdminUserResponseDto;
 import com.nm.novamart.Dto.Authorization.*;
 import com.nm.novamart.Service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.AuthenticationException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +33,17 @@ public class UserController {
     public ResponseEntity<?> isTokenExpired(@RequestBody TokenRequestDto tokenRequestDto) {
         Boolean response = userService.isTokenExpired(tokenRequestDto.getToken());
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<AdminUserResponseDto>> getAllUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
+    }
+
+    @PutMapping("/role")
+    public ResponseEntity<?> updateUserRole(@RequestBody AdminUpdateUserRole requestDto){
+        userService.updateUserRole(requestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

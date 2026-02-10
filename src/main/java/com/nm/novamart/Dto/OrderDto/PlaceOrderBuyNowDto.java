@@ -1,4 +1,4 @@
-package com.nm.novamart.Dto;
+package com.nm.novamart.Dto.OrderDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +13,7 @@ public class PlaceOrderBuyNowDto {
     private UUID userId;
     private UUID productId;
     private int quantity;
+    private String address;
     private String comment;
 
 }

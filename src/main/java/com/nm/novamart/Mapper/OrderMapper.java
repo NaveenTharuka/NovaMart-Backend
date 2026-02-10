@@ -1,6 +1,6 @@
 package com.nm.novamart.Mapper;
 
-import com.nm.novamart.Dto.OrderResponseDto;
+import com.nm.novamart.Dto.OrderDto.OrderResponseDto;
 import com.nm.novamart.Entity.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,6 +20,7 @@ public class OrderMapper {
                 .orderDate(order.getOrderDate().toString())
                 .orderItems(orderItemMapper.toResponse(order.getOrderItems()))
                 .orderTotal(order.getTotalAmount())
+                .shippingAddress(order.getAddress())
                 .build();
     }
 }
