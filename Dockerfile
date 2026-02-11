@@ -16,4 +16,4 @@ COPY --from=build /app/target/*.jar app.jar
 
 # Use Render's dynamic port
 ENV PORT 8080
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-Djava.net.preferIPv4Stack=true", "-jar", "app.jar"]
