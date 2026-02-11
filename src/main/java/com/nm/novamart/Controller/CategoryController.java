@@ -3,11 +3,9 @@ package com.nm.novamart.Controller;
 import com.nm.novamart.Dto.CategoryResponseDto;
 import com.nm.novamart.Service.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +16,12 @@ import java.util.List;
 public class CategoryController {
     private final CategoryServiceImpl categoryService;
 
-    @GetMapping
+
+    @GetMapping("/all")
     public ResponseEntity<List<CategoryResponseDto>> findAll() {
-        return categoryService.getAllCategories();
+        List<CategoryResponseDto> categories = categoryService.getAllCategories().getBody();
+
+        return ResponseEntity.status(HttpStatus.OK).body(categories);
+
     }
 }

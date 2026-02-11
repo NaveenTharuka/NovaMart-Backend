@@ -36,14 +36,14 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ProductResponseDto>> getAllProducts(){
-        return ResponseEntity.status(HttpStatus.FOUND).body(productService.getAllProducts());
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts());
     }
 
     @GetMapping("{productName}")
     public ResponseEntity<ProductResponseDto> getProductByName(@PathVariable String productName) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(productService.getProductByName(productName));
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProductByName(productName));
     }
 
     @GetMapping("/id/{id}")
@@ -53,7 +53,7 @@ public class ProductController {
 
     @GetMapping("category/{category}")
     public ResponseEntity<List<ProductResponseDto>> getProductsByCategory(@PathVariable String category) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(productService.getProductsByCategory(category));
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProductsByCategory(category));
     }
 
     @Transactional

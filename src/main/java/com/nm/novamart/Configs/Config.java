@@ -32,10 +32,10 @@ public class Config {
         return http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        //.requestMatchers("api/user/register", "api/user/login")
-                        //.permitAll()
-                        //.anyRequest().authenticated())
-                        .anyRequest().permitAll() //delete this and uncomment above parts.
+//                        .requestMatchers("api/user/register", "api/user/login","api/products/all", "api/products/id/{id}","api/categories/all", "api/user/isTokenExpired")
+//                        .permitAll()
+//                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->
