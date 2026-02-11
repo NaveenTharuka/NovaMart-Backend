@@ -1,16 +1,19 @@
-# ---- Build stage ----
-FROM maven:3.9.6-eclipse-temurin-21 AS build
-WORKDIR /app
-COPY pom.xml .
-COPY mvnw .
-COPY .mvn .mvn
-RUN ./mvnw dependency:go-offline
-COPY src src
-RUN ./mvnw clean package -DskipTests
+# Use Maven + Java preinstalled
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
-# ---- Runtime stage ----
-FROM eclipse-temurin:21-jre
 WORKDIR /app
+COPY . .
+
+# Build the Spring Boot project (skip tests for speed)
+RUN mvn clean package -DskipTests
+
+# Use lightweight JDK runtime for running the app
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+
+# Copy the JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+
+# Use Render's dynamic port
+ENV PORT 8080
+CMD ["java", "-jar", "app.jar"]

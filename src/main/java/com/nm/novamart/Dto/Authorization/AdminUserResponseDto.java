@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,10 +21,7 @@ public class AdminUserResponseDto {
     private Long cartId;
     private List<CartItemResponseDto> cartItems;
     private Role role;
-    private BigInteger phoneNumber;
+    private Long phoneNumber;
     private int orderCount;
     private String address;
 }
-
-
-

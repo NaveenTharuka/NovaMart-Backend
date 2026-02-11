@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "cart")
 public class Cart {
 
     @Id
@@ -27,6 +28,7 @@ public class Cart {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItems> items = new ArrayList<>();
 
+    @Column(name = "total_price")
     private double totalPrice;
 
 }

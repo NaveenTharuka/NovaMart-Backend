@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +24,7 @@ public class RegisterRequestDto {
     private String address;
 
     @Column(nullable = false)
-    private BigInteger phoneNumber;
+    private Long phoneNumber;
 
     @Column(nullable = false)
     private Role role;
