@@ -36,6 +36,7 @@ public class ProductMapper {
                 .price(productReqDto.getPrice())
                 .quantity(productReqDto.getQuantity())
                 .category(category)
+                .reviews(null)
                 .build();
     }
 
@@ -45,25 +46,28 @@ public class ProductMapper {
         }
 
         List<Review> reviews = product.getReviews();
-
         Double rating = 0.0;
         List<ProductReviewResponseDto> reviewResponseDtos = new ArrayList<>();
 
-        for(Review review : reviews) {
-            rating += review.getRating();
 
-            ProductReviewResponseDto response = ProductReviewResponseDto.builder()
-                    .username(review.getUser().getUserName())
-                    .comment(review.getComment())
-                    .rating(rating)
-                    .createdAt(review.getCreatedAt())
-                    .build();
+        if(!(reviews == null)){
 
-            reviewResponseDtos.add(response);
+
+            for (Review review : reviews) {
+                rating += review.getRating();
+
+                ProductReviewResponseDto response = ProductReviewResponseDto.builder()
+                        .username(review.getUser().getUserName())
+                        .comment(review.getComment())
+                        .rating(rating)
+                        .createdAt(review.getCreatedAt())
+                        .build();
+
+                reviewResponseDtos.add(response);
+            }
+
+            rating = rating / reviews.size();
         }
-
-        rating = rating / reviews.size();
-
 
 
         return ProductResponseDto.builder()
@@ -74,7 +78,7 @@ public class ProductMapper {
                 .price(product.getPrice())
                 .quantity(product.getQuantity())
                 .rating(rating)
-                .reviews(reviewResponseDtos)
+                .reviews(reviews== null ? null : reviewResponseDtos )
                 .build();
     }
 

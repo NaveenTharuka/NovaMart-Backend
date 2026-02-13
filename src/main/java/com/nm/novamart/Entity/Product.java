@@ -1,5 +1,6 @@
 package com.nm.novamart.Entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +29,7 @@ public class Product {
 
     // One product has many reviews
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Nullable
     private List<Review> reviews;
 
     @ManyToOne(fetch = FetchType.LAZY)
