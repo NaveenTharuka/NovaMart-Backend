@@ -30,12 +30,13 @@ public class Config {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(cors -> {})
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-//                        .requestMatchers("api/user/register", "api/user/login","api/products/all", "api/products/id/{id}","api/categories/all", "api/user/isTokenExpired")
-//                        .permitAll()
-//                        .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                        .requestMatchers("api/user/register", "api/user/login","api/products/all", "api/products/id/{id}","api/categories/all", "api/user/isTokenExpired")
+                        .permitAll()
+                        .anyRequest().authenticated()
+
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->
