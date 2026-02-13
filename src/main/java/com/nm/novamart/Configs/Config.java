@@ -42,8 +42,15 @@ public class Config {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("api/user/register", "api/user/login","api/products/all", "api/products/id/{id}","api/categories/all", "api/user/isTokenExpired")
-                        .permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/api/user/register",
+                                "/api/user/login",
+                                "/api/products/all",
+                                "/api/products/id/**",
+                                "/api/categories/all",
+                                "/api/user/isTokenExpired"
+                        ).permitAll()
                         .anyRequest().authenticated()
 
                 )
