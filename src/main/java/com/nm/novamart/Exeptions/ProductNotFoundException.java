@@ -14,4 +14,8 @@ public class ProductNotFoundException extends BaseException {
     public ProductNotFoundException(String productName) {
         super("Product not found with name: " + productName);
     }
+
+    public ProductNotFoundException(Long productId) {
+        super("Product not found with id: " + productId);
+    }
 }

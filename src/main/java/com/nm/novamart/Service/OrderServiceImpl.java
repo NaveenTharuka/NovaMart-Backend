@@ -67,6 +67,10 @@ public class OrderServiceImpl {
         // Generate orderId using the saved order's ID
         order.setOrderId(generateOrderId(order));
 
+        if (product.getQuantity() < requestDto.getQuantity() || requestDto.getQuantity() <= 0) {
+            throw new com.nm.novamart.Exeptions.InsufficientStockException(product.getName(), product.getQuantity(), requestDto.getQuantity());
+        }
+
         // Update product quantity
         product.setQuantity(product.getQuantity() - requestDto.getQuantity());
         productRepository.save(product);
@@ -236,7 +240,7 @@ public class OrderServiceImpl {
         String timeStamp = String.valueOf(System.currentTimeMillis());
         String postFix = String.format("%05d", orderId);
 
-        return prefix +"-"+ timeStamp + "-"+ postFix;
+        return prefix + timeStamp + "-"+ postFix;
     }
 
     public OrderStatus parseStatus(String status) {

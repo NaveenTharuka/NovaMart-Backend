@@ -29,6 +29,6 @@ public class ProductUpdateReqDto {
 
     @NotNull
     private String category;
-//    private String productImageUrl;
+    private String productImageUrl;
 
 }

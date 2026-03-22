@@ -38,12 +38,12 @@ public class ReviewServiceImpl {
         validateReviewDto(reviewDto);
 
         // Check for existing review
-//        if (reviewRepository.existsByUserIdAndProductId(
-//                reviewDto.getUserId(),
-//                reviewDto.getProductId()
-//        )) {
-//            throw new BaseException("You have already reviewed this product");
-//        }
+        if (reviewRepository.existsByUserIdAndProductId(
+                reviewDto.getUserId(),
+                reviewDto.getProductId()
+        )) {
+            throw new BaseException("You have already reviewed this product");
+        }
 
         // Get references (more efficient than findById)
         User user = userRepository.getReferenceById(reviewDto.getUserId());

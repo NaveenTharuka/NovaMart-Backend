@@ -86,9 +86,10 @@ public class ProductServiceImpl {
     }
 
     public ProductResponseDto getProductByOrderItemId(Long id){
-        Optional<OrderItems> item = orderItemRepository.findById(id);
+        OrderItems item = orderItemRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
-        Product product = item.get().getProduct();
+        Product product = item.getProduct();
         return productMapper.toResponse(product);
     }
 

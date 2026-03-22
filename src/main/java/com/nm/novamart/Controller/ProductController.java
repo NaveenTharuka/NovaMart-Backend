@@ -16,7 +16,6 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin("*")
 @RequestMapping("api/products")
 public class ProductController {
 
@@ -30,7 +29,7 @@ public class ProductController {
     }
 
     @Transactional
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ProductResponseDto> updateProduct(@RequestBody ProductUpdateReqDto productReqDto) {
         ProductResponseDto responseDto = productService.updateProduct(productReqDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);

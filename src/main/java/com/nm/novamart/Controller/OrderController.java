@@ -15,7 +15,6 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
 @RequestMapping("api/order")
 public class OrderController {
 
@@ -29,7 +28,6 @@ public class OrderController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<OrderResponseDto>> getOrdersByUserId(@PathVariable UUID userId) {
-        orderService.getAllOrdersByUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getAllOrdersByUser(userId));
     }
 
