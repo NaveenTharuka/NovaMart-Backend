@@ -51,7 +51,8 @@ public class Config {
                                 "/api/products/all",
                                 "/api/products/id/**",
                                 "/api/categories/all",
-                                "/api/user/isTokenExpired")
+                                "/api/user/isTokenExpired",
+                                "/api/ping")
                         .permitAll()
                         .anyRequest().authenticated()
 
