@@ -29,6 +29,8 @@ public class ProductResponseDto {
 
     private double rating;
 
+    private String imgUrl;
+
     private List<ProductReviewResponseDto>  reviews;
 
 

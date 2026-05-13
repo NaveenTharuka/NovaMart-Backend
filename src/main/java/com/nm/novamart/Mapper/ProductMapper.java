@@ -36,6 +36,7 @@ public class ProductMapper {
                 .price(productReqDto.getPrice())
                 .quantity(productReqDto.getQuantity())
                 .category(category)
+                .imgURL(productReqDto.getImgUrl())
                 .reviews(null)
                 .build();
     }
@@ -46,7 +47,7 @@ public class ProductMapper {
         }
 
         List<Review> reviews = product.getReviews();
-        Double rating = 0.0;
+        double rating = 0.0;
         List<ProductReviewResponseDto> reviewResponseDtos = new ArrayList<>();
 
 
@@ -77,6 +78,7 @@ public class ProductMapper {
                 .category(product.getCategory().getName())
                 .price(product.getPrice())
                 .quantity(product.getQuantity())
+                .imgUrl(product.getImgURL())
                 .rating(rating)
                 .reviews(reviews== null ? null : reviewResponseDtos )
                 .build();
@@ -90,6 +92,7 @@ public class ProductMapper {
         product.setName(productUpdateReqDto.getName());
         product.setDescription(productUpdateReqDto.getDescription());
         product.setPrice(productUpdateReqDto.getPrice());
+        product.setImgURL(productUpdateReqDto.getProductImageUrl());
         product.setQuantity(productUpdateReqDto.getQuantity());
 
         Category category = categoryRepository.getCategoryByName(productUpdateReqDto.getCategory());

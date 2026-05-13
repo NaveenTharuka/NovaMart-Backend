@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,8 +20,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import jakarta.servlet.http.HttpServletResponse;
-
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
@@ -35,8 +35,8 @@ public class Config {
     private jwtFilter jwtFilter;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    @Value("${FRONTEND_URL}")
-    private String frontendUrl;
+    @Value("${FRONTEND_URLS:http://localhost:5173}")
+    private String frontendUrls;  // Changed to FRONTEND_URLS (plural)
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -84,14 +84,11 @@ public class Config {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-
         CorsConfiguration config = new CorsConfiguration();
 
-        if (frontendUrl != null && !frontendUrl.isEmpty()) {
-            config.setAllowedOrigins(List.of(frontendUrl.split(",")));
-        } else {
-            config.setAllowedOrigins(List.of("http://localhost:5173")); // Default fallback
-        }
+        // Split the comma-separated URLs and trim whitespace
+        List<String> allowedOrigins = getAllowedOrigins();
+        config.setAllowedOrigins(allowedOrigins);
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
@@ -102,4 +99,15 @@ public class Config {
         return source;
     }
 
+    private List<String> getAllowedOrigins() {
+        if (frontendUrls == null || frontendUrls.trim().isEmpty()) {
+            return List.of("http://localhost:5173"); // Default fallback
+        }
+
+        // Split by comma and trim each URL
+        return Arrays.stream(frontendUrls.split(","))
+                .map(String::trim)
+                .filter(url -> !url.isEmpty())
+                .collect(Collectors.toList());
+    }
 }

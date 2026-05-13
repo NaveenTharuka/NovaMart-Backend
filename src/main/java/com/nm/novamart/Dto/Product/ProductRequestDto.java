@@ -1,5 +1,6 @@
 package com.nm.novamart.Dto.Product;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class ProductRequestDto {
     @NotNull(message = "Category Cant be blank")
     private String category;
 
-//    private String ImgURL;
+    @Nullable
+    private String imgUrl;
 
 }
