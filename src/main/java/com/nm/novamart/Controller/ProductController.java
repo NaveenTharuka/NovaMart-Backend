@@ -40,7 +40,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts());
     }
 
-    @GetMapping("{productName}")
+    @GetMapping("/{productName}")
     public ResponseEntity<ProductResponseDto> getProductByName(@PathVariable String productName) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProductByName(productName));
     }
@@ -50,19 +50,19 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProductById(id));
     }
 
-    @GetMapping("category/{category}")
+    @GetMapping("/category/{category}")
     public ResponseEntity<List<ProductResponseDto>> getProductsByCategory(@PathVariable String category) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProductsByCategory(category));
     }
 
     @Transactional
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<Product> deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    @GetMapping("order/{id}")
+    @GetMapping("/order/{id}")
     public ResponseEntity<ProductResponseDto> getProductsByOrderId(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProductByOrderItemId(id));
     }
