@@ -32,6 +32,7 @@ public class CartItemMapper {
             cartItemResponseDto.setSubTotal(cartItem.getSubtotal());
             Product product = cartItem.getProduct();
             cartItemResponseDto.setAvailability(product.getQuantity() >= cartItem.getQuantity());
+            cartItemResponseDto.setImgUrl(product.getImgURL());
             cartResponse.add(cartItemResponseDto);
         }
         return cartResponse;

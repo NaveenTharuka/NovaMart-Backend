@@ -18,5 +18,6 @@ public class CartItemResponseDto {
     private int quantity;
     private double subTotal;
     private boolean availability;
+    private String imgUrl;
 
 }
